@@ -62,7 +62,7 @@ The correlation coefficient of Turbine Total Height vs Turbine Swept Area is `r 
 
 ```{r echo = FALSE, fig.height = 4, fig.width = 7}
 turbines_ggplot <- ggplot(turbines)
-turbines_ggplot + geom_point(aes(x= Turbine.Total_Height,y= Turbine.Swept_Area), col='orange') + labs(title='Turbine Swept Area vs Turbine Total Height', x= 'Turbine Total Height (m)', y= 'Turbine Swept Area (m squared)')
+turbines_ggplot + geom_point(aes(x= Turbine.Total_Height,y= Turbine.Swept_Area), col='light blue') + labs(title='Turbine Swept Area vs Turbine Total Height', x= 'Turbine Total Height (m)', y= 'Turbine Swept Area (m squared)')
 ```
 
 
