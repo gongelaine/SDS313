@@ -54,7 +54,8 @@ The correlation coefficient of Turbine Rotor Diameter vs Turbine Swept Area is `
 turbines_ggplot <- ggplot(turbines)
 turbines_ggplot + geom_point(aes(x= Turbine.Rotor_Diameter,y=Turbine.Swept_Area), col='dark green') + labs(title='Turbine Swept Area vs Turbine Rotor Diameter', x= 'Turbine Rotor Diameter (m)', y= 'Turbine Swept Area (m squared)')
 ```
-
+```{r}
+hi
 
 ## **Question 3c: Turbine Total Height vs Turbine Swept Area**
 
