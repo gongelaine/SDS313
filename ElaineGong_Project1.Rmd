@@ -1,0 +1,83 @@
+---
+title: 'SDS313 Project 1: Exploring Individual Wind Turbine Measurements in the US'
+author: "Elaine Gong"
+output: 
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **Question 1: Introduction**
+
+Wind energy is a beneficial, renewable energy source. To capture wind energy, wind turbines are used to capture and turn it into electricity using the force from rotor blades. The __Project1_wind_turbines.csv__ dataset displays locations and technical specifications of the United States Wind Turbines database. Information for this dataset was gathered by the __Federal Aviation Administration's Digital Obstacle File and Obstruction Evaluation Airport Airspace Analysis__, The __American Clean Power Association__, __Lawrence Berkeley National Laboratory__, and the __United States Geological Survey__ _(Hoen 2018)_. It contains variables such as turbine state sites, turbine year, turbine swept area, and turbine capacity. The variable I will use for my chosen outcome is the turbine swept area. This refers to the area through which the rotor blades of a wind turbine spin. I will be investigating three predictor variables. One is the turbine hub height, which is the turbine rotor's height above ground. The second predictor variable is turbine rotor diameter, which is the diameter of the circle drawn by the moving rotor blades. The last predictor variable I will investigate is turbine total height.
+
+![](turbine.jpeg){width=70%} 
+
+```{r echo=FALSE}
+library(ggplot2)
+library(RColorBrewer)
+turbines <- read.csv('Project1_wind_turbines.csv')
+```
+
+## **Question 2: Univariate Distribution of Turbine Swept Area**
+
+```{r echo = FALSE}
+numsum <- round(fivenum(turbines$Turbine.Swept_Area), digits = 2)
+```
+
+The graph below shows a histogram of the univariate distribution of my outcome, which is the Turbine Swept Area. The five number summary describing this distribution is `r fivenum(turbines$Turbine.Swept_Area)`. This means that the minimum data is `r numsum[1]` $m^2$, the first quartile is `r numsum[2]` $m^2$, the median is `r numsum[3]` $m^2$, the third quartile is `r numsum[4]` $m^2$, and the maximum is `r numsum[5]` $m^2$. The histogram is somewhat bell-shaped. 
+
+```{r echo = FALSE, message = FALSE, fig.height = 4, fig.width = 7}
+turbines_ggplot <- ggplot(turbines)
+turbines_ggplot + geom_histogram(aes(x=Turbine.Swept_Area), col='black', fill = 'light blue') + labs(title='Turbine Swept Area', x= 'Turbine Swept Area (m squared)', y='Frequency')
+```
+
+## **Question 3a: Turbine Hub Height vs Turbine Swept Area**
+
+The correlation coefficient of Turbine Swept Area vs Turbine Hub Height is `r round(cor(turbines$Turbine.Hub_Height,turbines$Turbine.Swept_Area,use="complete.obs"), digits=2)`. This is indicative of a strong, positive correlation between the Turbine Hub Height predictor variable and the Turbine Swept area outcome variable. Generally, as the hub height of the turbine increases, the turbine swept area increases as well. The reason for this correlation may be because a larger swept area needs a taller foundation to maintain the overall proportion of the turbine. 
+
+```{r echo = FALSE, fig.height = 4, fig.width = 7}
+turbines_ggplot <- ggplot(turbines)
+turbines_ggplot + geom_point(aes(x= Turbine.Hub_Height,y=Turbine.Swept_Area), col='dark red') + labs(title='Turbine Swept Area vs. Turbine Hub Height', x= 'Turbine Hub Height (m)', y= 'Turbine Swept Area (m squared)')
+```
+
+
+## **Question 3b: Turbine Rotor Diameter vs Turbine Swept Area**
+
+The correlation coefficient of Turbine Rotor Diameter vs Turbine Swept Area is `r round(cor(turbines$Turbine.Rotor_Diameter,turbines$Turbine.Swept_Area,use="complete.obs"), digits=2)`. This number indicates an exceptionally strong, positive correlation as `r round(cor(turbines$Turbine.Rotor_Diameter,turbines$Turbine.Swept_Area,use="complete.obs"), digits=2)` is very close to the correlation coefficient of 1. The reason for this strong of a correlation is due to the equation for the area of a circle $A=\pi r^2$. Since the radius is $0.5*Diameter$, The correlation between radius to turbine swept area and between diameter to turbine swept area are the same. Due to the relation between diameter and area of a circle, the correlation is very strong. 
+
+```{r echo = FALSE, fig.height = 4, fig.width = 7}
+turbines_ggplot <- ggplot(turbines)
+turbines_ggplot + geom_point(aes(x= Turbine.Rotor_Diameter,y=Turbine.Swept_Area), col='dark green') + labs(title='Turbine Swept Area vs Turbine Rotor Diameter', x= 'Turbine Rotor Diameter (m)', y= 'Turbine Swept Area (m squared)')
+```
+
+
+## **Question 3c: Turbine Total Height vs Turbine Swept Area**
+
+The correlation coefficient of Turbine Total Height vs Turbine Swept Area is `r round(cor(turbines$Turbine.Total_Height,turbines$Turbine.Swept_Area,use="complete.obs"), digits=2)`. This number indicates a strong, positive correlation between the Turbine Total Height predictor variable and the Turbine Swept Area outcome variable. This implies that as the total height of the turbine increases, the turbine swept area generally increases as well. Similarly to the graph in __Question 3a__, the reason for this correlation may be because a larger swept area requires a taller overall turbine height to maintain the proportion of the turbine.  
+
+```{r echo = FALSE, fig.height = 4, fig.width = 7}
+turbines_ggplot <- ggplot(turbines)
+turbines_ggplot + geom_point(aes(x= Turbine.Total_Height,y= Turbine.Swept_Area), col='orange') + labs(title='Turbine Swept Area vs Turbine Total Height', x= 'Turbine Total Height (m)', y= 'Turbine Swept Area (m squared)')
+```
+
+
+## **Question 4: Conclusion**
+
+Wind is now America’s top renewable source of electricity generation. It it extremely efficient in reducing the amount of electricity generation from fossil fuels, resulting in lower carbon dioxide emissions and air pollution as a whole (2). From the univariate histogram of data for Turbine Swept Area, we are able to see somewhat of a bell-shaped graph with a minimum of `r numsum[1]` $m^2$, median of `r numsum[3]` $m^2$, and a maximum of `r numsum[5]` $m^2$.
+
+Through looking at the bivariate graphs for __Turbine Swept Area vs. Turbine Hub Height__, __Turbine Swept Area vs Turbine Rotor Diameter__, and __Turbine Swept Area vs Turbine Total Height__, we can see that all three have strong, positive correlations through their respective correlation coefficients ranging from `r round(cor(turbines$Turbine.Hub_Height,turbines$Turbine.Swept_Area,use="complete.obs"), digits=2)` to `r round(cor(turbines$Turbine.Rotor_Diameter,turbines$Turbine.Swept_Area,use="complete.obs"), digits=2)`. Though __Question 3a__ and __Question 3c__ both deal with the height of the turbine, the correlation coefficient of __Turbine Total Height vs Turbine Swept Area__ is greater than the correlation of __Turbine Hub Height vs Turbine Swept Area__. The reasoning between this discrepancy may be because the Turbine Total Height datapoints account for the height of the rotor as well. Due to this additional measurement, the proportion of the total height to turbine swept area has a stronger correlation as it maximizes efficiency, support, and performance of the turbines due to these proportions. 
+
+For future investigation, we could observe wind power in different geographic locations to determine the effects that weather and climate have on the dataset. Other possible future areas of reference also include observing the effects of older vs newer turbines and determining the effects of turbine material to see if there is any effect on turbine swept area as well. 
+
+## **References**
+
+1. Hoen, B.D., Diffendorfer, J.E., Rand, J.T., Kramer, L.A., Garrity, C.P., and Hunt, H.E., 2018, United States Wind Turbine Database (ver. 5.1, August 2022): U.S. Geological Survey, American Clean Power (ACP) Association, and Lawrence Berkeley National Laboratory data release, https://doi.org/10.5066/F7TX3DN0.
+
+2. “How Wind Power Is Leading America's Energy Transition.” CNBC, CNBC, 13 Mar. 2021, https://www.cnbc.com/2021/03/13/how-wind-became-americas-top-renewable-electricity-source.html. 
+
+3. “Taller, Faster, Better, Stronger. Wind Towers Are Only Getting Bigger.” UNSW Newsroom, 17 July 2019 [Photograph], https://newsroom.unsw.edu.au/news/science-tech/taller-faster-better-stronger-wind-towers-are-only-getting-bigger. 
